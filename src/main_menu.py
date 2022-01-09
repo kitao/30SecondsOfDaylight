@@ -11,11 +11,14 @@ class MainMenu:
         pyxel.playm(0, loop=True)
         
     def update(self, input):
-        if pyxel.btn(pyxel.KEY_ENTER):
+        if pyxel.btn(pyxel.KEY_RETURN):
             self.game.new_game()
         
     def draw(self):
         pyxel.text(40, 20, "30 Seconds of Daylight", 10)
-        pyxel.text(55, 50, "Enter to Start", 12)
-        pyxel.text(55, 90, "Escape to Exit", 9)
+        pyxel.text(30, 45, "Movement: Arrow or WASD keys", 13)
+        pyxel.text(30, 55, "Attack  : Hold Z or N keys", 13)
+        pyxel.text(30, 65, "Pickup  : X or M keys", 13)
+        pyxel.text(52, 88, "Enter to Start", 12)
+        pyxel.text(52, 100, "Escape to Exit", 9)
         

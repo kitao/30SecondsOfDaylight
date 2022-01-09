@@ -12,14 +12,14 @@ class App:
     TITLE = "30 Seconds of Daylight"
 
     def __init__(self):
-        pyxel.init(160, 120, caption=self.TITLE, scale=4, fps=self.FPS)
+        pyxel.init(160, 120, title=self.TITLE, fps=self.FPS)
 
         pyxel.load("../res/rpg01.pyxres")
         
         self.input = Input()
         self.game = Game()
         
-        pyxel.mouse(visible=True)
+        # pyxel.mouse(visible=True)
 
         pyxel.run(self.update, self.draw)
         

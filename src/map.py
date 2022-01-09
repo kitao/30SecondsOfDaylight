@@ -13,13 +13,13 @@ import shield
 import weapon
 
 class Map:
-    LADDER_TILE = 48/8 + (16/8 * 32)
+    LADDER_TILE = (6, 2)
 
     WALKABLE_TILES = [
-        8/8 + (8/8 * 32),
-        32/8 + (32/8 * 32),
-        40/8 + (32/8 * 32),
-        32/8 + (64/8 * 32),
+        (1, 1),
+        (4, 4),
+        (5, 4),
+        (4, 8),
         LADDER_TILE
     ]
 
@@ -46,12 +46,17 @@ class Map:
         self.entities.clear()
         self.spawn_enemies()
         self.spawn_items()
+
+        self.cam.x = max(0, min(self.tm_w*8 - \
+            self.cam.w, self.player.tile_x*8 - 40))
+        self.cam.y = max(0, min(self.tm_h*8 - \
+            self.cam.h, self.player.tile_y*8 - 32))
         
     def spawn_enemies(self):
         open_tiles = []
         for y in range(self.tm_h):
             for x in range(self.tm_w):
-                tile = pyxel.tilemap(self.tm).get(self.tm_x + x, self.tm_y + y)
+                tile = pyxel.tilemap(self.tm).pget(self.tm_x + x, self.tm_y + y)
                 if (x != self.player.tile_x or \
                     y != self.player.tile_y) and \
                     tile in self.WALKABLE_TILES and \
@@ -124,7 +129,7 @@ class Map:
         open_tiles = []
         for y in range(self.tm_h):
             for x in range(self.tm_w):
-                tile = pyxel.tilemap(self.tm).get(self.tm_x + x, self.tm_y + y)
+                tile = pyxel.tilemap(self.tm).pget(self.tm_x + x, self.tm_y + y)
                 if (x != self.player.tile_x or \
                     y != self.player.tile_y) and \
                     tile in self.WALKABLE_TILES and \
@@ -180,7 +185,7 @@ class Map:
         self.update_cam = False
             
     def _is_tile_solid(self, tile_x, tile_y):
-        tile = pyxel.tilemap(self.tm).get(self.tm_x + tile_x, self.tm_y + tile_y)
+        tile = pyxel.tilemap(self.tm).pget(self.tm_x + tile_x, self.tm_y + tile_y)
         if tile in self.WALKABLE_TILES:
             return False
         else:
@@ -197,7 +202,7 @@ class Map:
         
     def is_tile_free_for_enemy(self, tile_x, tile_y):
         if self.is_tile_free(tile_x, tile_y):
-            tile = pyxel.tilemap(self.tm).get(self.tm_x + tile_x, self.tm_y + tile_y)
+            tile = pyxel.tilemap(self.tm).pget(self.tm_x + tile_x, self.tm_y + tile_y)
             if tile == self.LADDER_TILE:
                 return False
             else:
@@ -264,7 +269,7 @@ class Map:
             else: # clip normally to camera window
                 pyxel.clip(40, 8, 80, 72)
                 
-            pyxel.bltm(40-self.cam.x, 8-self.cam.y, self.tm, self.tm_x, self.tm_y, self.tm_w, self.tm_h)
+            pyxel.bltm(40-self.cam.x, 8-self.cam.y, self.tm, self.tm_x * 8, self.tm_y * 8, self.tm_w * 8, self.tm_h * 8)
             
             #pyxel.rect(self.tm_x, self.tm_y, self.tm_w*8, self.tm_h*8, 7)
     

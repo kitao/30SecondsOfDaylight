@@ -16,23 +16,23 @@ class Input:
         self.inputs.clear()
     
         if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.KEY_W) or \
-            pyxel.btn(pyxel.GAMEPAD_1_UP):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
             self.inputs.append(self.UP)
         elif pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.KEY_S) or \
-            pyxel.btn(pyxel.GAMEPAD_1_DOWN):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
             self.inputs.append(self.DOWN)
         elif pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.KEY_A) or \
-            pyxel.btn(pyxel.GAMEPAD_1_LEFT):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
             self.inputs.append(self.LEFT)
         elif pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.KEY_D) or \
-            pyxel.btn(pyxel.GAMEPAD_1_RIGHT):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
             self.inputs.append(self.RIGHT)
             
         if pyxel.btn(pyxel.KEY_Z) or pyxel.btn(pyxel.KEY_N) or \
-            pyxel.btn(pyxel.GAMEPAD_1_A):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_A):
             self.inputs.append(self.CONFIRM)
         elif pyxel.btn(pyxel.KEY_X) or pyxel.btn(pyxel.KEY_M) or \
-            pyxel.btn(pyxel.GAMEPAD_1_B):
+            pyxel.btn(pyxel.GAMEPAD1_BUTTON_B):
             self.inputs.append(self.CANCEL)
         
         return self.inputs
