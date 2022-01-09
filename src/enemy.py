@@ -49,23 +49,23 @@ class Enemy(Entity):
 
 def create(name, tile_x, tile_y):
     e = None
-    if name is "Rat":
+    if name == "Rat":
         e = Rat(tile_x, tile_y)
-    elif name is "Scorpion":
+    elif name == "Scorpion":
         e = Scorpion(tile_x, tile_y)
-    elif name is "Guard":
+    elif name == "Guard":
         e = Guard(tile_x, tile_y)
-    elif name is "Strongman":
+    elif name == "Strongman":
         e = Strongman(tile_x, tile_y)
-    elif name is "Ghost":
+    elif name == "Ghost":
         e = Ghost(tile_x, tile_y)
-    elif name is "Skeleton":
+    elif name == "Skeleton":
         e = Skeleton(tile_x, tile_y)
-    elif name is "Zombie":
+    elif name == "Zombie":
         e = Zombie(tile_x, tile_y)
-    elif name is "Serpent":
+    elif name == "Serpent":
         e = Serpent(tile_x, tile_y)
-    elif name is "Witch":
+    elif name == "Witch":
         e = Witch(tile_x, tile_y)
         
     return e
