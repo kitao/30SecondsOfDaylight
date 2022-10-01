@@ -11,7 +11,7 @@ class MainMenu:
         pyxel.playm(0, loop=True)
         
     def update(self, input):
-        if pyxel.btn(pyxel.KEY_RETURN):
+        if pyxel.btn(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
             self.game.new_game()
         
     def draw(self):
