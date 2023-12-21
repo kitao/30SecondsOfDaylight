@@ -1,4 +1,3 @@
-
 from random import choice, sample
 
 import pyxel
@@ -15,13 +14,7 @@ from utils import *
 class Map:
     LADDER_TILE = (6, 2)
 
-    WALKABLE_TILES = [
-        (1, 1),
-        (4, 4),
-        (5, 4),
-        (4, 8),
-        LADDER_TILE
-    ]
+    WALKABLE_TILES = [(1, 1), (4, 4), (5, 4), (4, 8), LADDER_TILE]
 
     def __init__(self, name, tm, tm_x, tm_y, tm_w, tm_h, world):
         self.name = name
@@ -47,34 +40,36 @@ class Map:
         self.spawn_enemies()
         self.spawn_items()
 
-        self.cam.x = max(0, min(self.tm_w*8 - \
-            self.cam.w, self.player.tile_x*8 - 40))
-        self.cam.y = max(0, min(self.tm_h*8 - \
-            self.cam.h, self.player.tile_y*8 - 32))
+        self.cam.x = max(
+            0, min(self.tm_w * 8 - self.cam.w, self.player.tile_x * 8 - 40)
+        )
+        self.cam.y = max(
+            0, min(self.tm_h * 8 - self.cam.h, self.player.tile_y * 8 - 32)
+        )
 
     def spawn_enemies(self):
         open_tiles = []
         for y in range(self.tm_h):
             for x in range(self.tm_w):
                 tile = pyxel.tilemaps[self.tm].pget(self.tm_x + x, self.tm_y + y)
-                if (x != self.player.tile_x or \
-                    y != self.player.tile_y) and \
-                    tile in self.WALKABLE_TILES and \
-                    distance((x, y), (self.player.tile_x, self.player.tile_y)) >= 4:
+                if (
+                    (x != self.player.tile_x or y != self.player.tile_y)
+                    and tile in self.WALKABLE_TILES
+                    and distance((x, y), (self.player.tile_x, self.player.tile_y)) >= 4
+                ):
                     open_tiles.append([self.tm_x + x, self.tm_y + y])
 
         # enemy chances
-        lvl = self.player.level+1
+        lvl = self.player.level + 1
         chances = {
             "Rat": 0,
             "Scorpion": 0,
             "Guard": 0,
             "Strongman": 0,
-
             "Ghost": 0,
             "Skeleton": 0,
             "Zombie": 0,
-            "Serpent": 0
+            "Serpent": 0,
         }
 
         if lvl >= 15:
@@ -113,27 +108,31 @@ class Map:
             for i in range(num):
                 en_list.append(key)
 
-        #print(en_list)
+        # print(en_list)
 
         num_to_gen = math.floor(len(open_tiles) * 0.15)
 
-        #print(num_to_gen)
+        # print(num_to_gen)
 
         random_open_tiles = sample(open_tiles, num_to_gen)
         for i in range(num_to_gen):
-            self.add_entity(enemy.create(choice(en_list), \
-                random_open_tiles[i][0], random_open_tiles[i][1]))
-            #self.add_entity(Rat(random_open_tiles[i][0], random_open_tiles[i][1]))
+            self.add_entity(
+                enemy.create(
+                    choice(en_list), random_open_tiles[i][0], random_open_tiles[i][1]
+                )
+            )
+            # self.add_entity(Rat(random_open_tiles[i][0], random_open_tiles[i][1]))
 
     def spawn_items(self):
         open_tiles = []
         for y in range(self.tm_h):
             for x in range(self.tm_w):
                 tile = pyxel.tilemaps[self.tm].pget(self.tm_x + x, self.tm_y + y)
-                if (x != self.player.tile_x or \
-                    y != self.player.tile_y) and \
-                    tile in self.WALKABLE_TILES and \
-                    distance((x, y), (self.player.tile_x, self.player.tile_y)) >= 4:
+                if (
+                    (x != self.player.tile_x or y != self.player.tile_y)
+                    and tile in self.WALKABLE_TILES
+                    and distance((x, y), (self.player.tile_x, self.player.tile_y)) >= 4
+                ):
                     open_tiles.append([self.tm_x + x, self.tm_y + y])
 
         if self.player.hp < math.floor(self.player.max_hp * 0.75):
@@ -141,7 +140,7 @@ class Map:
             self.add_entity(potion.Red(tile[0], tile[1]))
             open_tiles.remove(tile)
 
-        if choice([0,1]) == 0:
+        if choice([0, 1]) == 0:
             if self.player.weapon == "None":
                 tile = choice(open_tiles)
                 self.add_entity(weapon.Club(tile[0], tile[1]))
@@ -172,15 +171,17 @@ class Map:
         self.player.update(inputs, self)
 
         if self.update_cam:
-            self.cam.x = max(0, min(self.tm_w*8 - \
-                self.cam.w, self.player.tile_x*8 - 40))
-            self.cam.y = max(0, min(self.tm_h*8 - \
-                self.cam.h, self.player.tile_y*8 - 32))
+            self.cam.x = max(
+                0, min(self.tm_w * 8 - self.cam.w, self.player.tile_x * 8 - 40)
+            )
+            self.cam.y = max(
+                0, min(self.tm_h * 8 - self.cam.h, self.player.tile_y * 8 - 32)
+            )
 
         for e in self.entities:
             e.update(self)
 
-        self.entities.sort( key=lambda  x: x.type, reverse=True)
+        self.entities.sort(key=lambda x: x.type, reverse=True)
 
         self.update_cam = False
 
@@ -211,32 +212,38 @@ class Map:
             return False
 
     def is_tile_free(self, tile_x, tile_y):
-        if tile_x < 0 or tile_x >= self.tm_w or\
-            tile_y < 0 or tile_y >= self.tm_h:
+        if tile_x < 0 or tile_x >= self.tm_w or tile_y < 0 or tile_y >= self.tm_h:
             return False
 
-        if self._is_tile_solid(tile_x, tile_y) or\
-            self._is_tile_occupied(tile_x, tile_y):
+        if self._is_tile_solid(tile_x, tile_y) or self._is_tile_occupied(
+            tile_x, tile_y
+        ):
             return False
         else:
             return True
 
     def tile_get_any_enemy(self, tile_x, tile_y):
         for e in self.entities:
-            if self.tm_x + e.tile_x == self.tm_x + tile_x and self.tm_y + e.tile_y ==   self.tm_y + tile_y and\
-                e.type == Entity.TYPE_ENEMY:
+            if (
+                self.tm_x + e.tile_x == self.tm_x + tile_x
+                and self.tm_y + e.tile_y == self.tm_y + tile_y
+                and e.type == Entity.TYPE_ENEMY
+            ):
                 return e
         return None
 
     def tile_get_any_item(self, tile_x, tile_y):
         for e in self.entities:
-            if (self.tm_x + e.tile_x == self.tm_x + tile_x and\
-                self.tm_y + e.tile_y == self.tm_y + tile_y) and\
-                (e.type == Entity.TYPE_WEAPON or \
-                e.type == Entity.TYPE_SHIELD or \
-                e.type == Entity.TYPE_POTION or \
-                e.type == Entity.TYPE_TELEPORTER or \
-                e.type == Entity.TYPE_TRIGGER):
+            if (
+                self.tm_x + e.tile_x == self.tm_x + tile_x
+                and self.tm_y + e.tile_y == self.tm_y + tile_y
+            ) and (
+                e.type == Entity.TYPE_WEAPON
+                or e.type == Entity.TYPE_SHIELD
+                or e.type == Entity.TYPE_POTION
+                or e.type == Entity.TYPE_TELEPORTER
+                or e.type == Entity.TYPE_TRIGGER
+            ):
                 return e
         return None
 
@@ -253,33 +260,39 @@ class Map:
     def draw(self, draw_tilemap, draw_entities, night):
         if draw_tilemap:
             # bltm(x, y, tm, u, v, w, h, [colkey])
-            if night: # clip close around player
-
-            # pyxel.blt(40 + self.tile_x*8 - cam.x, \
+            if night:  # clip close around player
+                # pyxel.blt(40 + self.tile_x*8 - cam.x, \
                 # 8 + self.tile_y*8 - cam.y, \
                 # self.img, \
                 # self.img_x, \
                 # self.img_y, \
                 # 8, 8)
 
-                clip_x = 40 + self.player.tile_x*8 - self.cam.x - 8
-                clip_y = 8 + self.player.tile_y*8 - self.cam.y - 8
+                clip_x = 40 + self.player.tile_x * 8 - self.cam.x - 8
+                clip_y = 8 + self.player.tile_y * 8 - self.cam.y - 8
 
                 pyxel.clip(clip_x, clip_y, 24, 24)
-            else: # clip normally to camera window
+            else:  # clip normally to camera window
                 pyxel.clip(40, 8, 80, 72)
 
-            pyxel.bltm(40-self.cam.x, 8-self.cam.y, self.tm, self.tm_x * 8, self.tm_y * 8, self.tm_w * 8, self.tm_h * 8)
+            pyxel.bltm(
+                40 - self.cam.x,
+                8 - self.cam.y,
+                self.tm,
+                self.tm_x * 8,
+                self.tm_y * 8,
+                self.tm_w * 8,
+                self.tm_h * 8,
+            )
 
-            #pyxel.rect(self.tm_x, self.tm_y, self.tm_w*8, self.tm_h*8, 7)
+            # pyxel.rect(self.tm_x, self.tm_y, self.tm_w*8, self.tm_h*8, 7)
 
         if draw_entities:
             if night:
                 for e in self.entities:
                     x_dist = e.tile_x - self.player.tile_x
                     y_dist = e.tile_y - self.player.tile_y
-                    if x_dist >= -1 and x_dist <= 2 and \
-                        y_dist >= -1 and y_dist <= 2:
+                    if x_dist >= -1 and x_dist <= 2 and y_dist >= -1 and y_dist <= 2:
                         e.draw(self.cam)
             else:
                 for e in self.entities:
