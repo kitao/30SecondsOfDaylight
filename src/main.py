@@ -1,5 +1,12 @@
-from random import randint, choice, sample
+# title: 30 Seconds of Daylight
+# author: Adam
+# desc: First Pyxel Jam-winning roguelike game
+# site: https://github.com/kitao/30SecondsOfDaylight
+# license: MIT
+# version: 1.0
+
 import math
+from random import choice, randint, sample
 
 import pyxel
 
